@@ -220,6 +220,15 @@ $(BIN)/exec/hypervolume_calculator_exec : $(BIN)/instance/instance.o \
 
 hypervolume_calculator_exec : $(BIN)/exec/hypervolume_calculator_exec
 
+$(BIN)/exec/hypervolume_ratio_calculator_exec : $(BIN)/instance/instance.o \
+                                                $(BIN)/utils/argument_parser.o \
+                                                $(BIN)/exec/hypervolume_ratio_calculator_exec.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+
+hypervolume_ratio_calculator_exec : $(BIN)/exec/hypervolume_ratio_calculator_exec
+
 $(BIN)/exec/results_aggregator_exec : $(BIN)/utils/argument_parser.o \
                                       $(BIN)/exec/results_aggregator_exec.o
 	@echo "--> Linking objects..."
@@ -273,6 +282,7 @@ execs : nsga2_solver_exec \
 		ihs_solver_exec \
 		nsbrkga_solver_exec \
         hypervolume_calculator_exec \
+        hypervolume_ratio_calculator_exec \
         results_aggregator_exec \
 		reference_pareto_front_calculator_exec \
 		modified_generational_distance_calculator_exec \

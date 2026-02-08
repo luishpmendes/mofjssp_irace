@@ -1,0 +1,10 @@
+# MHACO Parameters for iRace Tuning
+population_size_factor   "--population-size-factor "   i   (25, 125)
+ker                      "--ker "                      i   (2, 100)
+q                        "--q "                        r   (0.01, 2.00)
+threshold                "--threshold "                i   (1, 100)
+n_gen_mark               "--n-gen-mark "               i   (1, 100)
+focus                    "--focus "                    r   (0.00, 10.00)
+
+[global]
+digits = 2

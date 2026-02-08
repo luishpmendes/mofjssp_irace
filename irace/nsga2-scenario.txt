@@ -1,0 +1,8 @@
+execDir = "./"
+trainInstancesDir = "../instances"
+trainInstancesFile = "./instances.txt"
+targetRunner = "./nsga2-tunner.sh"
+maxTime = 172800
+parallel = 1
+logFile = "./irace-nsga2.Rdata"
+parameterFile = "./nsga2-parameters.txt"

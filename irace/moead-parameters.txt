@@ -1,0 +1,13 @@
+# MOEA/D Parameters for iRace Tuning
+population_size_factor   "--population-size-factor "   i   (25, 125)
+weight_generation        "--weight-generation "        c   ("low discrepancy", "random")
+decomposition            "--decomposition "            c   ("tchebycheff", "weighted", "bi")
+neighbours               "--neighbours "               i   (2, 50)
+cr                       "--cr "                       r   (0.01, 0.99)
+f                        "--f "                        r   (0.01, 0.99)
+eta_m                    "--eta-m "                    r   (1.00, 99.00)
+realb                    "--realb "                    r   (0.01, 0.99)
+limit                    "--limit "                    i   (1, 20)
+
+[global]
+digits = 2

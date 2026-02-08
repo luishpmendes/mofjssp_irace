@@ -1,0 +1,16 @@
+# IHS Parameters for iRace Tuning
+population_size_factor   "--population-size-factor "   i   (25, 125)
+phmcr                    "--phmcr "                    r   (0.01, 0.99)
+ppar_min                 "--ppar-min "                 r   (0.01, 0.99)
+ppar_max                 "--ppar-max "                 r   (0.50, 0.99)
+bw_min                   "--bw-min "                   r   (0.000001, 0.99)
+bw_max                   "--bw-max "                   r   (0.01, 0.99)
+
+[global]
+digits = 6
+
+[forbidden]
+# ppar_min >= ppar_max
+(ppar_min >= ppar_max)
+# bw_min >= bw_max
+(bw_min >= bw_max)

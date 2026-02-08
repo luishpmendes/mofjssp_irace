@@ -1,0 +1,10 @@
+# NSGA-II Parameters for iRace Tuning
+# Format: name switch type range [| conditions]
+population_size_factor   "--population-size-factor "   i   (25, 125)
+crossover_probability    "--crossover-probability "    r   (0.01, 0.99)
+crossover_distribution   "--crossover-distribution "   r   (1.00, 99.00)
+mutation_probability     "--mutation-probability "     r   (0.01, 0.99)
+mutation_distribution    "--mutation-distribution "    r   (1.00, 99.00)
+
+[global]
+digits = 2

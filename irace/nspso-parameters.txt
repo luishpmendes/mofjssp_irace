@@ -1,0 +1,12 @@
+# NSPSO Parameters for iRace Tuning
+population_size_factor       "--population-size-factor "       i   (25, 125)
+omega                        "--omega "                        r   (0.00, 1.00)
+c1                           "--c1 "                           r   (0.01, 4.00)
+c2                           "--c2 "                           r   (0.01, 4.00)
+chi                          "--chi "                          r   (0.01, 1.20)
+v_coeff                      "--v-coeff "                      r   (0.01, 1.00)
+leader_selection_range       "--leader-selection-range "       i   (1, 100)
+diversity_mechanism          "--diversity-mechanism "          c   ("crowding distance", "niche count", "max min")
+
+[global]
+digits = 2
