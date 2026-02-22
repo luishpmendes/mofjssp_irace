@@ -7,7 +7,7 @@ from plotter_definitions import *
 
 dirname = os.path.dirname(__file__)
 
-metrics_labels = ["Hypervolume Ratio", "Modified Inverted Generational Distance"]
+metrics_labels = ["Hypervolume Ratio", "Normalized Modified Inverted Generational Distance"]
 
 metrics = [[], []]
 

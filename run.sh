@@ -44,7 +44,6 @@ do
     do
         for seed in ${seeds[@]}
         do
-
             command="${path}/bin/exec/${solver}_solver_exec "
             command+="--instance ${path}/instances/${instance}.txt "
             command+="--seed ${seed} "
@@ -218,7 +217,7 @@ i=0
 
 for instance in ${instances[@]}
 do
-    command="${path}/bin/exec/modified_generational_distance_calculator_exec "
+    command="${path}/bin/exec/normalized_modified_generational_distance_calculator_exec "
     command+="--instance ${path}/instances/${instance}.txt "
     command+="--reference-pareto ${path}/pareto/${instance}.txt "
     j=0;

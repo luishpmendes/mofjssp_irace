@@ -280,13 +280,13 @@ int main(int argc, char * argv[]) {
             }
         }
     } else {
-        std::cerr << "./modified_inverted_generational_distance_exec "
+        std::cerr << "./normalized_modified_inverted_generational_distance_exec "
                   << "--instance <instance_filename> "
                   << "--reference-pareto <reference_pareto_filename> "
                   << "--pareto-i <pareto_filename> "
                   << "--best-solutions-snapshots-i <best_solutions_snapshots_filename> "
-                  << "--nigd-plus-i <modified_inverted_generational_distance_filename> "
-                  << "--nigd-plus-snapshots-i <modified_inverted_generational_distance_snapshots_filename> "
+                  << "--nigd-plus-i <normalized_modified_inverted_generational_distance_filename> "
+                  << "--nigd-plus-snapshots-i <normalized_modified_inverted_generational_distance_snapshots_filename> "
                   << std::endl;
     }
 

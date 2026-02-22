@@ -37,9 +37,6 @@ done
 
 START_TIME=$(date +%s.%N)
 
-# Print command that will be executed
-# echo "$SOLVER --instance \"$INSTANCE\" --seed \"$SEED\" --time-limit \"$TIME_LIMIT\" --memory ${TRANSFORMED_PARAMS[@]}"
-
 "$SOLVER" \
     --instance "$INSTANCE" \
     --seed "$SEED" \

@@ -263,8 +263,7 @@ int main(int argc, char *argv[]) {
                   << "--best-solutions-snapshots-i "
                      "<best_solutions_snapshots_filename> "
                   << "--hvr-i <hvr_filename> "
-                  << "--hvr-snapshots-i <hvr_snapshots_filename> "
-                  << std::endl;
+                  << "--hvr-snapshots-i <hvr_snapshots_filename> " << std::endl;
     }
 
     return 0;

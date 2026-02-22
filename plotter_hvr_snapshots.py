@@ -79,7 +79,7 @@ for i in range(len(solvers)):
     data = {
         'Solver': [],
         'Time': [],
-        'Hypervolume': [],
+        'Hypervolume Ratio': [],
         'Standard Deviation': []
     }
 
