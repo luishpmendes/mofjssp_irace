@@ -150,37 +150,34 @@ int main(int argc, char *argv[]) {
         }
 
         for (unsigned i = 0; i < num_solvers; i++) {
-            if (arg_parser.option_exists("--hypervolume-" +
-                                         std::to_string(i))) {
-                std::ofstream ofs;
+            std::ofstream ofs;
 
-                ofs.open(arg_parser.option_value("--hypervolume-" +
-                                                 std::to_string(i)));
+            ofs.open(arg_parser.option_value("--hypervolume-" +
+                                                std::to_string(i)));
 
-                if (ofs.is_open()) {
-                    double hypervolume = compute_hypervolume(
-                        instance.senses, reference_point, paretos[i]);
+            if (ofs.is_open()) {
+                double hypervolume = compute_hypervolume(
+                    instance.senses, reference_point, paretos[i]);
 
-                    assert(hypervolume >= 0.0);
+                assert(hypervolume >= 0.0);
 
-                    ofs << hypervolume << std::endl;
+                ofs << hypervolume << std::endl;
 
-                    if (ofs.eof() || ofs.fail() || ofs.bad()) {
-                        throw std::runtime_error(
-                            "Error writing file " +
-                            arg_parser.option_value("--hypervolume-" +
-                                                    std::to_string(i)) +
-                            ".");
-                    }
-
-                    ofs.close();
-                } else {
+                if (ofs.eof() || ofs.fail() || ofs.bad()) {
                     throw std::runtime_error(
-                        "File " +
+                        "Error writing file " +
                         arg_parser.option_value("--hypervolume-" +
                                                 std::to_string(i)) +
-                        " not created.");
+                        ".");
                 }
+
+                ofs.close();
+            } else {
+                throw std::runtime_error(
+                    "File " +
+                    arg_parser.option_value("--hypervolume-" +
+                                            std::to_string(i)) +
+                    " not created.");
             }
         }
 

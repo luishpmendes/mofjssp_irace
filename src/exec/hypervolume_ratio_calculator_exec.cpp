@@ -187,78 +187,72 @@ int main(int argc, char *argv[]) {
         }
 
         for (unsigned i = 0; i < num_solvers; i++) {
-            if (arg_parser.option_exists("--hvr-" + std::to_string(i))) {
-                std::ofstream ofs;
+            std::ofstream ofs;
 
-                ofs.open(arg_parser.option_value("--hvr-" + std::to_string(i)));
+            ofs.open(arg_parser.option_value("--hvr-" + std::to_string(i)));
 
-                if (ofs.is_open()) {
-                    double hypervolume_ratio = compute_hypervolume_ratio(
-                        reference_hypervolume, instance.senses, reference_point,
-                        paretos[i]);
+            if (ofs.is_open()) {
+                double hypervolume_ratio = compute_hypervolume_ratio(
+                    reference_hypervolume, instance.senses, reference_point,
+                    paretos[i]);
 
-                    assert(hypervolume_ratio >= 0.0);
-                    assert(hypervolume_ratio <= 1.0);
+                assert(hypervolume_ratio >= 0.0);
+                assert(hypervolume_ratio <= 1.0);
 
-                    ofs << hypervolume_ratio << std::endl;
+                ofs << hypervolume_ratio << std::endl;
 
-                    if (ofs.eof() || ofs.fail() || ofs.bad()) {
-                        throw std::runtime_error(
-                            "Error writing file " +
-                            arg_parser.option_value("--hvr-" +
-                                                    std::to_string(i)) +
-                            ".");
-                    }
-
-                    ofs.close();
-                } else {
+                if (ofs.eof() || ofs.fail() || ofs.bad()) {
                     throw std::runtime_error(
-                        "File " +
+                        "Error writing file " +
                         arg_parser.option_value("--hvr-" + std::to_string(i)) +
-                        " not created.");
+                        ".");
                 }
+
+                ofs.close();
+            } else {
+                throw std::runtime_error(
+                    "File " +
+                    arg_parser.option_value("--hvr-" + std::to_string(i)) +
+                    " not created.");
             }
         }
 
         for (unsigned i = 0; i < num_solvers; i++) {
-            if (arg_parser.option_exists("--hvr-snapshots-" +
-                                         std::to_string(i))) {
-                std::ofstream ofs;
+            std::ofstream ofs;
 
-                ofs.open(arg_parser.option_value("--hvr-snapshots-" +
-                                                 std::to_string(i)));
+            ofs.open(arg_parser.option_value("--hvr-snapshots-" +
+                                             std::to_string(i)));
 
-                if (ofs.is_open()) {
-                    for (unsigned j = 0; j < best_solutions_snapshots[i].size();
-                         j++) {
-                        double hypervolume_ratio = compute_hypervolume_ratio(
-                            reference_hypervolume, instance.senses,
-                            reference_point, best_solutions_snapshots[i][j]);
+            if (ofs.is_open()) {
+                for (unsigned j = 0; j < best_solutions_snapshots[i].size();
+                     j++) {
+                    double hypervolume_ratio = compute_hypervolume_ratio(
+                        reference_hypervolume, instance.senses, reference_point,
+                        best_solutions_snapshots[i][j]);
 
-                        assert(hypervolume_ratio >= 0.0);
-                        assert(hypervolume_ratio <= 1.0);
+                    assert(hypervolume_ratio >= 0.0);
+                    assert(hypervolume_ratio <= 1.0);
 
-                        ofs << iteration_snapshots[i][j] << ","
-                            << time_snapshots[i][j] << "," << hypervolume_ratio
-                            << std::endl;
+                    ofs << iteration_snapshots[i][j] << ","
+                        << time_snapshots[i][j] << "," << hypervolume_ratio
+                        << std::endl;
 
-                        if (ofs.eof() || ofs.fail() || ofs.bad()) {
-                            throw std::runtime_error(
-                                "Error writing file " +
-                                arg_parser.option_value("--hvr-snapshots-" +
-                                                        std::to_string(i)) +
-                                ".");
-                        }
+                    if (ofs.eof() || ofs.fail() || ofs.bad()) {
+                        throw std::runtime_error(
+                            "Error writing file " +
+                            arg_parser.option_value("--hvr-snapshots-" +
+                                                    std::to_string(i)) +
+                            ".");
                     }
-
-                    ofs.close();
-                } else {
-                    throw std::runtime_error(
-                        "File " +
-                        arg_parser.option_value("--hvr-snapshots-" +
-                                                std::to_string(i)) +
-                        " not created.");
                 }
+
+                ofs.close();
+            } else {
+                throw std::runtime_error(
+                    "File " +
+                    arg_parser.option_value("--hvr-snapshots-" +
+                                            std::to_string(i)) +
+                    " not created.");
             }
         }
     } else {
@@ -269,7 +263,8 @@ int main(int argc, char *argv[]) {
                   << "--best-solutions-snapshots-i "
                      "<best_solutions_snapshots_filename> "
                   << "--hvr-i <hvr_filename> "
-                  << "--hvr-snapshots-i <hvr_snapshots_filename> " << std::endl;
+                  << "--hvr-snapshots-i <hvr_snapshots_filename> "
+                  << std::endl;
     }
 
     return 0;

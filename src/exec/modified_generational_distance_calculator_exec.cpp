@@ -128,9 +128,9 @@ int main(int argc, char * argv[]) {
                                      std::to_string(num_solvers)) ||
             arg_parser.option_exists("--best-solutions-snapshots-" +
                                      std::to_string(num_solvers)) ||
-            arg_parser.option_exists("--igd-plus-" +
+            arg_parser.option_exists("--nigd-plus-" +
                                      std::to_string(num_solvers)) ||
-            arg_parser.option_exists("--igd-plus-snapshots-" +
+            arg_parser.option_exists("--nigd-plus-snapshots-" +
                                      std::to_string(num_solvers));
             num_solvers++) {}
 
@@ -212,7 +212,7 @@ int main(int argc, char * argv[]) {
 
         for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
-            ofs.open(arg_parser.option_value("--igd-plus-" +
+            ofs.open(arg_parser.option_value("--nigd-plus-" +
                                              std::to_string(i)));
 
             if(ofs.is_open()) {
@@ -229,14 +229,14 @@ int main(int argc, char * argv[]) {
 
                 if(ofs.eof() || ofs.fail() || ofs.bad()) {
                     throw std::runtime_error("Error writing file " +
-                            arg_parser.option_value("--igd-plus-" +
+                            arg_parser.option_value("--nigd-plus-" +
                                 std::to_string(i)) + ".");
                 }
 
                 ofs.close();
             } else {
                 throw std::runtime_error("File " +
-                        arg_parser.option_value("--igd-plus-" +
+                        arg_parser.option_value("--nigd-plus-" +
                             std::to_string(i)) + " not created.");
             }
         }
@@ -267,7 +267,7 @@ int main(int argc, char * argv[]) {
                     if(ofs.eof() || ofs.fail() || ofs.bad()) {
                         throw std::runtime_error("Error writing file " +
                                 arg_parser.option_value(
-                                    "--igd-plus-snapshots-" +
+                                    "--nigd-plus-snapshots-" +
                                     std::to_string(i)) + ".");
                     }
                 }
@@ -275,7 +275,7 @@ int main(int argc, char * argv[]) {
                 ofs.close();
             } else {
                 throw std::runtime_error("File " +
-                        arg_parser.option_value("--igd-plus-snapshots-" +
+                        arg_parser.option_value("--nigd-plus-snapshots-" +
                             std::to_string(i)) + " not created.");
             }
         }
@@ -285,8 +285,8 @@ int main(int argc, char * argv[]) {
                   << "--reference-pareto <reference_pareto_filename> "
                   << "--pareto-i <pareto_filename> "
                   << "--best-solutions-snapshots-i <best_solutions_snapshots_filename> "
-                  << "--igd-plus-i <modified_inverted_generational_distance_filename> "
-                  << "--igd-plus-snapshots-i <modified_inverted_generational_distance_snapshots_filename> "
+                  << "--nigd-plus-i <modified_inverted_generational_distance_filename> "
+                  << "--nigd-plus-snapshots-i <modified_inverted_generational_distance_snapshots_filename> "
                   << std::endl;
     }
 

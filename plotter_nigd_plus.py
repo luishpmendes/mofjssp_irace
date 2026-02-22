@@ -1,8 +1,6 @@
 import csv
-from functools import partial
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
-import numpy as np
 import seaborn as sns
 import ptitprince as pt
 import os
@@ -11,27 +9,27 @@ from plotter_definitions import *
 
 dirname = os.path.dirname(__file__)
 
-min_hypervolume = 1.0
-max_hypervolume = 0.0
+min_nigd_plus = 1.0
+max_nigd_plus = 0.0
 for instance in instances:
     for solver in solvers:
-        filename = os.path.join(dirname, "hypervolume/" + instance + "_" + solver + ".txt")
+        filename = os.path.join(dirname, "nigd_plus/" + instance + "_" + solver + ".txt")
         with open(filename) as csv_file:
             data = csv.reader(csv_file)
             for row in data:
-                min_hypervolume = min(min_hypervolume, float(row[0]))
-                max_hypervolume = max(max_hypervolume, float(row[0]))
-delta_hypervolume = max_hypervolume - min_hypervolume
-min_hypervolume = max(min_hypervolume - round(0.025 * delta_hypervolume), 0.00)
-max_hypervolume = min(max_hypervolume + round(0.025 * delta_hypervolume), 1.00)
+                min_nigd_plus = min(min_nigd_plus, float(row[0]))
+                max_nigd_plus = max(max_nigd_plus, float(row[0]))
+delta_nigd_plus = max_nigd_plus - min_nigd_plus
+min_nigd_plus = max(min_nigd_plus - round(0.025 * delta_nigd_plus), 0.00)
+max_nigd_plus = min(max_nigd_plus + round(0.025 * delta_nigd_plus), 1.00)
 
 for instance in instances:
     plt.figure(figsize = (11, 11))
     plt.title(instance, fontsize = "xx-large")
-    plt.xlabel("Hypervolume Ratio", fontsize = "x-large")
+    plt.xlabel("Normalized Modified Inverted Generational Distance", fontsize = "x-large")
     xs = []
     for solver in solvers:
-        filename = os.path.join(dirname, "hypervolume/" + instance + "_" + solver + ".txt")
+        filename = os.path.join(dirname, "nigd_plus/" + instance + "_" + solver + ".txt")
         x = []
         with open(filename) as csv_file:
             data = csv.reader(csv_file)
@@ -42,249 +40,253 @@ for instance in instances:
     sns.stripplot(data = xs, palette = colors, orient = "h", size = 2, zorder = 0)
     sns.boxplot(data = xs, orient = "h", width = 0.20, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
     plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers], fontsize = "large")
-    filename = os.path.join(dirname, "hypervolume/" + instance + ".png")
+    filename = os.path.join(dirname, "nigd_plus/" + instance + ".png")
     plt.savefig(filename, format = "png")
     plt.close()
 
-hypervolume = []
+nigd_plus = []
 
 for solver in solvers:
-    hypervolume.append([])
+    nigd_plus.append([])
 
 for instance in instances:
     for i in range(len(solvers)):
         for seed in seeds:
-            filename = os.path.join(dirname, "hypervolume/" + instance + "_" + solvers[i] + "_" + str(seed) + ".txt")
+            filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solvers[i] + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
                     for row in data:
-                        hypervolume[i].append(float(row[0]))
+                        nigd_plus[i].append(float(row[0]))
                     csv_file.close()
 
 plt.figure()
-plt.xlabel(fontsize="large", xlabel="Hypervolume Ratio")
+plt.xlabel(fontsize="large", xlabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="x", which="both", labelsize="large")
 plt.grid(alpha=0.5, color="gray", linestyle="dashed", linewidth=0.5, which="both")
-pt.half_violinplot(data = hypervolume, palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
-sns.stripplot(data = hypervolume, palette = colors, orient = "h", size = 2, zorder = 0)
-sns.boxplot(data = hypervolume, orient = "h", width = 0.20, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
+pt.half_violinplot(data = nigd_plus, palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
+sns.stripplot(data = nigd_plus, palette = colors, orient = "h", size = 2, zorder = 0)
+sns.boxplot(data = nigd_plus, orient = "h", width = 0.2, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
 plt.yticks(fontsize="large", ticks=list(range(len(solvers))), labels=[solver_labels[solver] for solver in solvers])
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
-hypervolume_per_num_jobs = {}
+nigd_plus_per_num_jobs = {}
 
 for solver in solvers:
-    hypervolume_per_num_jobs[solver] = {}
+    nigd_plus_per_num_jobs[solver] = {}
     for nums_job in nums_jobs:
-        hypervolume_per_num_jobs[solver][nums_job] = []
+        nigd_plus_per_num_jobs[solver][nums_job] = []
 
 for num_jobs in nums_jobs:
     for instance in instances_per_num_jobs[num_jobs]:
         for solver in solvers:
             for seed in seeds:
-                filename = os.path.join(dirname, "hypervolume/" + instance + "_" + solver + "_" + str(seed) + ".txt")
+                filename = os.path.join(dirname, "nigd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt")
                 if os.path.exists(filename):
                     with open(filename) as csv_file:
                         data = csv.reader(csv_file, delimiter = ",")
                         for row in data:
-                            hypervolume_per_num_jobs[solver][num_jobs].append(float(row[0]))
+                            nigd_plus_per_num_jobs[solver][num_jobs].append(float(row[0]))
                         csv_file.close()
 
 plt.figure()
 plt.xlabel(fontsize="large", xlabel="Number of Jobs")
-plt.ylabel(fontsize="large", ylabel="Hypervolume Ratio")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
     for num_jobs in nums_jobs:
-        y.append(stats.mean(hypervolume_per_num_jobs[solvers[i]][num_jobs]))
+        y.append(stats.mean(nigd_plus_per_num_jobs[solvers[i]][num_jobs]))
     plt.plot(nums_jobs, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
-plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
-plt.legend(fontsize="large", loc="best")
+plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
-plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
+plt.legend(fontsize="large", loc="upper left")
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_num_jobs.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_mean_per_num_jobs.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_num_jobs.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_mean_per_num_jobs.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 plt.figure()
 plt.xlabel(fontsize="large", xlabel="Number of Jobs")
-plt.ylabel(fontsize="large", ylabel="Hypervolume Ratio")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
     y2 = []
     for num_jobs in nums_jobs:
-        quantiles = stats.quantiles(hypervolume_per_num_jobs[solvers[i]][num_jobs])
+        quantiles = stats.quantiles(nigd_plus_per_num_jobs[solvers[i]][num_jobs])
         y0.append(quantiles[0])
         y2.append(quantiles[2])
     plt.fill_between(nums_jobs, y0, y2, color = colors[i], alpha = 0.25)
 for i in range(len(solvers)):
     y1 = []
     for num_jobs in nums_jobs:
-        quantiles = stats.quantiles(hypervolume_per_num_jobs[solvers[i]][num_jobs])
+        quantiles = stats.quantiles(nigd_plus_per_num_jobs[solvers[i]][num_jobs])
         y1.append(quantiles[1])
     plt.plot(nums_jobs, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
-plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
-plt.legend(fontsize="large", loc="best")
+plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
-plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
+plt.legend(fontsize="large", loc="best")
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_num_jobs.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_quartiles_per_num_jobs.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_num_jobs.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_quartiles_per_num_jobs.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
-hypervolume_per_num_machines = {}
+nigd_plus_per_num_machines = {}
 
 for solver in solvers:
-    hypervolume_per_num_machines[solver] = {}
+    nigd_plus_per_num_machines[solver] = {}
     for num_machines in nums_machines:
-        hypervolume_per_num_machines[solver][num_machines] = []
+        nigd_plus_per_num_machines[solver][num_machines] = []
 
 for num_machines in nums_machines:
     for instance in instances_per_num_machines[num_machines]:
         for solver in solvers:
             for seed in seeds:
-                filename = os.path.join(dirname, "hypervolume/" + instance + "_" + solver + "_" + str(seed) + ".txt")
+                filename = os.path.join(dirname, "nigd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt")
                 if os.path.exists(filename):
                     with open(filename) as csv_file:
                         data = csv.reader(csv_file, delimiter = ",")
                         for row in data:
-                            hypervolume_per_num_machines[solver][num_machines].append(float(row[0]))
+                            nigd_plus_per_num_machines[solver][num_machines].append(float(row[0]))
                         csv_file.close()
 
 plt.figure()
 plt.xlabel(fontsize="large", xlabel="Number of Machines")
-plt.ylabel(fontsize="large", ylabel="Hypervolume Ratio")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
     for num_machines in nums_machines:
-        y.append(stats.mean(hypervolume_per_num_machines[solvers[i]][num_machines]))
+        y.append(stats.mean(nigd_plus_per_num_machines[solvers[i]][num_machines]))
     plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
-plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
-plt.legend(fontsize="large", loc="lower left")
+plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
-plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
+plt.legend(fontsize="large", loc="best")
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_num_machines.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_mean_per_num_machines.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_num_machines.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_mean_per_num_machines.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 plt.figure()
 plt.xlabel(fontsize="large", xlabel="Number of Machines")
-plt.ylabel(fontsize="large", ylabel="Hypervolume Ratio")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
     y2 = []
     for num_machines in nums_machines:
-        quantiles = stats.quantiles(hypervolume_per_num_machines[solvers[i]][num_machines])
+        quantiles = stats.quantiles(nigd_plus_per_num_machines[solvers[i]][num_machines])
         y0.append(quantiles[0])
         y2.append(quantiles[2])
     plt.fill_between(nums_machines, y0, y2, color = colors[i], alpha = 0.25)
 for i in range(len(solvers)):
     y1 = []
     for num_machines in nums_machines:
-        quantiles = stats.quantiles(hypervolume_per_num_machines[solvers[i]][num_machines])
+        quantiles = stats.quantiles(nigd_plus_per_num_machines[solvers[i]][num_machines])
         y1.append(quantiles[1])
     plt.plot(nums_machines, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
-plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
-plt.legend(fontsize="large", loc="best")
+plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
-plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
+plt.legend(fontsize="large", loc="upper center")
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_num_machines.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_quartiles_per_num_machines.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_num_machines.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_quartiles_per_num_machines.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
-hypervolume_per_total_num_operations = {}
+nigd_plus_per_total_num_operations = {}
 
 for solver in solvers:
-    hypervolume_per_total_num_operations[solver] = {}
+    nigd_plus_per_total_num_operations[solver] = {}
     for total_num_operations in total_nums_operations:
-        hypervolume_per_total_num_operations[solver][total_num_operations] = []
+        nigd_plus_per_total_num_operations[solver][total_num_operations] = []
 
 for total_num_operations in total_nums_operations:
     for instance in instances_per_total_num_operations[total_num_operations]:
         for solver in solvers:
             for seed in seeds:
-                filename = os.path.join(dirname, "hypervolume/" + instance + "_" + solver + "_" + str(seed) + ".txt")
+                filename = os.path.join(dirname, "nigd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt")
                 if os.path.exists(filename):
                     with open(filename) as csv_file:
                         data = csv.reader(csv_file, delimiter = ",")
                         for row in data:
-                            hypervolume_per_total_num_operations[solver][total_num_operations].append(float(row[0]))
+                            nigd_plus_per_total_num_operations[solver][total_num_operations].append(float(row[0]))
                         csv_file.close()
 
 plt.figure()
 plt.xlabel(fontsize="large", xlabel="Total Number of Operations")
-plt.ylabel(fontsize="large", ylabel="Hypervolume Ratio")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
     for total_num_operations in total_nums_operations:
-        y.append(stats.mean(hypervolume_per_total_num_operations[solvers[i]][total_num_operations]))
+        y.append(stats.mean(nigd_plus_per_total_num_operations[solvers[i]][total_num_operations]))
     plt.plot(total_nums_operations, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
-plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
-plt.legend(fontsize="large", loc="lower left")
+plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
-plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
+plt.legend(fontsize="large", loc="upper left")
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_total_num_operations.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_mean_per_total_num_operations.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_total_num_operations.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_mean_per_total_num_operations.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 plt.figure()
 plt.xlabel(fontsize="large", xlabel="Total Number of Operations")
-plt.ylabel(fontsize="large", ylabel="Hypervolume Ratio")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
     y2 = []
     for total_num_operations in total_nums_operations:
-        quantiles = stats.quantiles(hypervolume_per_total_num_operations[solvers[i]][total_num_operations])
+        quantiles = stats.quantiles(nigd_plus_per_total_num_operations[solvers[i]][total_num_operations])
         y0.append(quantiles[0])
         y2.append(quantiles[2])
     plt.fill_between(total_nums_operations, y0, y2, color = colors[i], alpha = 0.25)
 for i in range(len(solvers)):
     y1 = []
     for total_num_operations in total_nums_operations:
-        quantiles = stats.quantiles(hypervolume_per_total_num_operations[solvers[i]][total_num_operations])
+        quantiles = stats.quantiles(nigd_plus_per_total_num_operations[solvers[i]][total_num_operations])
         y1.append(quantiles[1])
     plt.plot(total_nums_operations, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
-plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
-plt.legend(fontsize="large", loc="best")
+plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
-plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
+plt.legend(fontsize="large", loc="upper left")
 plt.tight_layout()
-filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_total_num_operations.png")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_quartiles_per_total_num_operations.png")
 plt.savefig(bbox_inches='tight', fname=filename, format="png")
-filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_total_num_operations.pdf")
+filename = os.path.join(dirname, "nigd_plus/nigd_plus_quartiles_per_total_num_operations.pdf")
 plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
