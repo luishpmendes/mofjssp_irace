@@ -1,4 +1,5 @@
 #!/bin/bash
+export LC_NUMERIC=C
 ###############################################################################
 # MOEA/D Target Runner for iRace
 ###############################################################################
@@ -13,7 +14,7 @@ PARAMS=("$@")
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SOLVER="${PROJECT_DIR}/bin/exec/moead_solver_exec"
 HV_CALC="${PROJECT_DIR}/bin/exec/hypervolume_calculator_exec"
-TIME_LIMIT=300
+TIME_LIMIT="${TIME_LIMIT:-900}"
 
 TMPDIR=$(mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
@@ -55,13 +56,13 @@ done
 
 START_TIME=$(date +%s.%N)
 
-"$SOLVER" \
+{ "$SOLVER" \
     --instance "$INSTANCE" \
     --seed "$SEED" \
     --time-limit "$TIME_LIMIT" \
     --pareto "$PARETO_FILE" \
     --preserve-diversity \
-    "${TRANSFORMED_PARAMS[@]}" > /dev/null 2>&1
+    "${TRANSFORMED_PARAMS[@]}" > /dev/null 2>&1; } 2>/dev/null
 
 SOLVER_EXIT=$?
 
@@ -74,17 +75,17 @@ if [ $SOLVER_EXIT -ne 0 ] || [ ! -f "$PARETO_FILE" ]; then
     exit 0
 fi
 
-"$HV_CALC" \
+{ "$HV_CALC" \
     --instance "$INSTANCE" \
     --pareto-0 "$PARETO_FILE" \
-    --hypervolume-0 "$HV_FILE" > /dev/null 2>&1
+    --hypervolume-0 "$HV_FILE" > /dev/null 2>&1; } 2>/dev/null
 
 if [ ! -f "$HV_FILE" ]; then
     echo "Inf $ELAPSED_INT"
     exit 0
 fi
 
-HV=$(cat "$HV_FILE")
-COST=$(echo "-$HV" | bc -l)
+HV=$(tr -d '[:space:]' < "$HV_FILE")
+COST=$(awk -v hv="$HV" 'BEGIN { printf "%.17g", -hv }')
 
 echo "$COST $ELAPSED_INT"

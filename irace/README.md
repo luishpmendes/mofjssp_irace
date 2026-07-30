@@ -7,7 +7,7 @@ This folder contains iRace configurations for **offline algorithm configuration*
 | Algorithm | Scenario File | Parameters File | Target Runner |
 |-----------|---------------|-----------------|---------------|
 | NSGA-II   | `nsga2-scenario.txt` | `nsga2-parameters.txt` | `nsga2-tunner.sh` |
-| NS-BRKGA  | `nsbrkga-scenario.txt` | `nsbrkga-parameters.txt` | `nsbrkga-tunner.sh` |
+| NS-BRKGA  | `nsbrkga-scenario-stage<N>.txt` | `nsbrkga-parameters-stage<N>.txt` | `nsbrkga-tunner-stage<N>.sh` (N = 1..6) |
 | MOEA/D    | `moead-scenario.txt` | `moead-parameters.txt` | `moead-tunner.sh` |
 | NSPSO     | `nspso-scenario.txt` | `nspso-parameters.txt` | `nspso-tunner.sh` |
 | IHS       | `ihs-scenario.txt` | `ihs-parameters.txt` | `ihs-tunner.sh` |
@@ -63,7 +63,7 @@ Stage 1 uses a synthetic `elites_percentage` parameter that the runner maps to b
 
 ### Running the Ablation
 
-**Run all six stages sequentially with held-out testing:**
+**Run all six stages in parallel, then the held-out testing phase:**
 ```bash
 cd irace/
 ./irace_runner.sh
@@ -85,8 +85,6 @@ irace --check --scenario nsbrkga-scenario-stage1.txt
 
 After tuning, each stage produces:
 - `irace-nsbrkga-stageX.Rdata` — iRace log with all tuning data
-- `nsbrkga-stageX-testing.rds` — R native testing results
-- `nsbrkga-stageX-testing.csv` — CSV with elite performance on test instances
 - `nsbrkga-stageX-testing.log` — Console output from testing
 
 To inspect results in R:
@@ -101,8 +99,7 @@ print(iraceResults$allElites[[length(iraceResults$allElites)]])
 |---------|-------|--------|
 | Runner time limit | 900 s | Matches `run.sh` benchmark |
 | iRace budget per stage | `maxTime = 2160000` | Reference repository parity |
-| Test elites | 5 per stage | Standard ablation practice |
-| Master seeds | 20260611–20260616 | One per stage, set in `irace_runner.sh` |
+| Test elites | 5 per stage | `testNbElites` in each scenario and in `irace_runner.sh` |
 
 ---
 
@@ -111,7 +108,6 @@ print(iraceResults$allElites[[length(iraceResults$allElites)]])
 - **`*-scenario.txt`** — iRace scenario configuration (paths, budget, log file)
 - **`*-parameters.txt`** — Parameter space definition (name, switch, type, range, constraints)
 - **`*-tunner.sh`** — Target runner script that iRace calls to evaluate a configuration
-- **`instances.txt`** — List of training instance filenames (legacy, used by non-staged tuning)
 - **`train-instances.txt`** — Training instances for staged ablation
 - **`test-instances.txt`** — Held-out test instances for staged ablation
 - **`irace_runner.sh`** — Orchestration script for the full ablation workflow
@@ -127,7 +123,8 @@ print(iraceResults$allElites[[length(iraceResults$allElites)]])
    - `nsga2_solver_exec`, `nsbrkga_solver_exec`, etc.
    - `hypervolume_calculator_exec`
 
-3. **Training instances** in `../instances/` matching the names in `instances.txt`.
+3. **Training and test instances** in `../instances/` matching the names in
+   `train-instances.txt` and `test-instances.txt`.
 
 ## How iRace Calls the Target Runner
 
@@ -152,9 +149,9 @@ Run tuning from inside the `irace/` directory:
 Rscript -e "library(irace); irace::irace_cmdline(c('--scenario','nsga2-scenario.txt'))"
 ```
 
-**NS-BRKGA:**
+**NS-BRKGA (one ablation stage, N = 1..6):**
 ```bash
-Rscript -e "library(irace); irace::irace_cmdline(c('--scenario','nsbrkga-scenario.txt'))"
+Rscript -e "library(irace); irace::irace_cmdline(c('--scenario','nsbrkga-scenario-stage1.txt'))"
 ```
 
 Optional: redirect output to a log:
@@ -200,4 +197,4 @@ where `type` is: `i` (integer), `r` (real), `c` (categorical).
 | `command not found` errors | Ensure solver binaries are built in `../bin/exec/` |
 | iRace reports non-numeric output | Runner must print exactly `cost time` (two numbers) |
 | `No such file or directory` | Check working directory; run from inside `irace/` |
-| Instance not found | Verify entries in `instances.txt` match files in `../instances/` |
+| Instance not found | Verify entries in `train-instances.txt` / `test-instances.txt` match files in `../instances/` |

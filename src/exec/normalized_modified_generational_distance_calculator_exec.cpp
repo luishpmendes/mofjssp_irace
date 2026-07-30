@@ -244,7 +244,7 @@ int main(int argc, char * argv[]) {
         for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
 
-            ofs.open(arg_parser.option_value("--igd-plus-snapshots-" +
+            ofs.open(arg_parser.option_value("--nigd-plus-snapshots-" +
                                              std::to_string(i)));
 
             if(ofs.is_open()) {
@@ -280,7 +280,7 @@ int main(int argc, char * argv[]) {
             }
         }
     } else {
-        std::cerr << "./normalized_modified_inverted_generational_distance_exec "
+        std::cerr << "./normalized_modified_generational_distance_calculator_exec "
                   << "--instance <instance_filename> "
                   << "--reference-pareto <reference_pareto_filename> "
                   << "--pareto-i <pareto_filename> "

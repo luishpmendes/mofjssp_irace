@@ -6,7 +6,7 @@
 namespace mofjssp {
 /*************************************************************
  * The NSBRKGA_Solver represents a solver for the
- * Multi-Objective Binary Knapsack Problem using the
+ * Multi-Objective Flexible Job-Shop Scheduling Problem using the
  * Non-Dominated Sorting Biased Random-Key Genetic Algorithm.
  *************************************************************/
 class NSBRKGA_Solver : public Solver {

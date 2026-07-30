@@ -52,7 +52,7 @@ for solver in solvers:
 for instance in instances:
     for i in range(len(solvers)):
         for seed in seeds:
-            filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solvers[i] + "_" + str(seed) + ".txt")
+            filename = os.path.join(dirname, "nigd_plus/" + instance + "_" + solvers[i] + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
@@ -98,7 +98,7 @@ plt.figure()
 plt.xlabel(fontsize="large", xlabel="Number of Jobs")
 plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
-plt.xticks(fontsize="large", ticks=ms)
+plt.xticks(fontsize="large", ticks=nums_jobs)
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
@@ -121,7 +121,7 @@ plt.figure()
 plt.xlabel(fontsize="large", xlabel="Number of Jobs")
 plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
 plt.tick_params(axis="both", which="both", labelsize="large")
-plt.xticks(fontsize="large", ticks=ms)
+plt.xticks(fontsize="large", ticks=nums_jobs)
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []

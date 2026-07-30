@@ -1,4 +1,6 @@
 bin
-*.swp
 .vscode
 __pycache__
+*.swp
+.Rhistory
+.Rdata
