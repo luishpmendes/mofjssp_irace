@@ -148,25 +148,6 @@ int main (int argc, char * argv[]) {
             solver.set_pr_dist_func_type(t);
         }
 
-        if(arg_parser.option_exists("--pr-dist-func")) {
-            std::string s = arg_parser.option_value("--pr-dist-func");
-            std::transform(s.begin(), s.end(), s.begin(), ::toupper);
-
-            if (s.compare("HAMMING") == 0) {
-                solver.pr_dist_func =
-                    std::shared_ptr<NSBRKGA::DistanceFunctionBase>(
-                        new NSBRKGA::HammingDistance());
-            } else if (s.compare("KENDALL_TAU") == 0) {
-                solver.pr_dist_func =
-                    std::shared_ptr<NSBRKGA::DistanceFunctionBase>(
-                        new NSBRKGA::KendallTauDistance());
-            } else if (s.compare("EUCLIDEAN") == 0) {
-                solver.pr_dist_func =
-                    std::shared_ptr<NSBRKGA::DistanceFunctionBase>(
-                        new NSBRKGA::EuclideanDistance());
-            }
-        }
-
         if(arg_parser.option_exists("--pr-percentage")) {
             solver.pr_percentage =
                 std::stod(arg_parser.option_value("--pr-percentage"));
@@ -199,7 +180,7 @@ int main (int argc, char * argv[]) {
 
         if(arg_parser.option_exists("--reset-intensity")) {
             solver.reset_intensity =
-                std::stoul(arg_parser.option_value("--reset-intensity"));
+                std::stod(arg_parser.option_value("--reset-intensity"));
         }
 
         if(arg_parser.option_exists("--num-threads")) {

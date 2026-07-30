@@ -13,12 +13,108 @@ This folder contains iRace configurations for **offline algorithm configuration*
 | IHS       | `ihs-scenario.txt` | `ihs-parameters.txt` | `ihs-tunner.sh` |
 | MHACO     | `mhaco-scenario.txt` | `mhaco-parameters.txt` | `mhaco-tunner.sh` |
 
+## NS-BRKGA Ablation Study
+
+A six-stage ablation study progressively enables NS-BRKGA mechanisms to measure their individual contributions. Each stage is a full iRace tuning run with a dedicated parameter space, scenario, and target runner.
+
+### Stage Ladder
+
+| Stage | Features Enabled | New Parameters | Disabled |
+|-------|-----------------|----------------|----------|
+| **1** | Vanilla baseline — single population, fixed elite size | `population_size_factor`, `elites_percentage`, `mutation_probability`, `mutation_distribution`, `num_total_parents`, `num_elite_parents`, `bias_type`, `crossover_type` | diversity, exchange, PR, shaking, reset |
+| **2** | + Dynamic elite sizing + diversity | `min_elites_percentage`, `max_elites_percentage`, `diversity_type` (replaces `elites_percentage`) | exchange, PR, shaking, reset |
+| **3** | + Multi-population exchange | `num_populations`, `exchange_interval`, `num_exchange_individuals` | PR, shaking, reset |
+| **4** | + Path relinking | `pr_type`, `pr_dist_func`, `pr_percentage`, `pr_interval` | shaking, reset |
+| **5** | + Shaking | `shake_interval`, `shake_intensity`, `shake_distribution` | reset |
+| **6** | Full NS-BRKGA | `reset_interval`, `reset_intensity` | *(all active)* |
+
+### Stage Files
+
+Each stage has three dedicated files:
+
+| Stage | Parameters | Scenario | Runner |
+|-------|-----------|----------|--------|
+| 1 | `nsbrkga-parameters-stage1.txt` | `nsbrkga-scenario-stage1.txt` | `nsbrkga-tunner-stage1.sh` |
+| 2 | `nsbrkga-parameters-stage2.txt` | `nsbrkga-scenario-stage2.txt` | `nsbrkga-tunner-stage2.sh` |
+| 3 | `nsbrkga-parameters-stage3.txt` | `nsbrkga-scenario-stage3.txt` | `nsbrkga-tunner-stage3.sh` |
+| 4 | `nsbrkga-parameters-stage4.txt` | `nsbrkga-scenario-stage4.txt` | `nsbrkga-tunner-stage4.sh` |
+| 5 | `nsbrkga-parameters-stage5.txt` | `nsbrkga-scenario-stage5.txt` | `nsbrkga-tunner-stage5.sh` |
+| 6 | `nsbrkga-parameters-stage6.txt` | `nsbrkga-scenario-stage6.txt` | `nsbrkga-tunner-stage6.sh` |
+
+### Train/Test Instance Split
+
+The ablation uses an explicit train/test split for iRace:
+
+**Training (5 instances)** — `train-instances.txt`:
+| Instance | Jobs | Machines | Total Operations | Role |
+|----------|------|----------|-----------------|------|
+| mk01 | 10 | 6 | 55 | Small baseline |
+| mk04 | 15 | 8 | 90 | Medium, 8-machine |
+| mk05 | 15 | 4 | 106 | Only 4-machine case |
+| mk08 | 20 | 10 | 225 | Large, 10-machine |
+| mk14 | 30 | 15 | 277 | Largest job count, 15 machines |
+
+**Testing (10 instances)** — `test-instances.txt`:
+mk02, mk03, mk06, mk07, mk09, mk10, mk11, mk12, mk13, mk15
+
+### Stage 1 Runner Behavior
+
+Stage 1 uses a synthetic `elites_percentage` parameter that the runner maps to both `--min-elites-percentage` and `--max-elites-percentage` (same value), enforcing a fixed elite size. Stages 2–6 tune `min_elites_percentage` and `max_elites_percentage` independently.
+
+### Running the Ablation
+
+**Run all six stages sequentially with held-out testing:**
+```bash
+cd irace/
+./irace_runner.sh
+```
+
+**Run a single stage manually:**
+```bash
+cd irace/
+Rscript -e "library(irace); irace::irace_cmdline(c('--scenario','nsbrkga-scenario-stage1.txt'))"
+```
+
+**Validate a stage scenario before running:**
+```bash
+cd irace/
+irace --check --scenario nsbrkga-scenario-stage1.txt
+```
+
+### Ablation Results
+
+After tuning, each stage produces:
+- `irace-nsbrkga-stageX.Rdata` — iRace log with all tuning data
+- `nsbrkga-stageX-testing.rds` — R native testing results
+- `nsbrkga-stageX-testing.csv` — CSV with elite performance on test instances
+- `nsbrkga-stageX-testing.log` — Console output from testing
+
+To inspect results in R:
+```r
+load("irace-nsbrkga-stage6.Rdata")
+print(iraceResults$allElites[[length(iraceResults$allElites)]])
+```
+
+### Budget and Reproducibility
+
+| Setting | Value | Source |
+|---------|-------|--------|
+| Runner time limit | 900 s | Matches `run.sh` benchmark |
+| iRace budget per stage | `maxTime = 2160000` | Reference repository parity |
+| Test elites | 5 per stage | Standard ablation practice |
+| Master seeds | 20260611–20260616 | One per stage, set in `irace_runner.sh` |
+
+---
+
 ## Folder Contents
 
 - **`*-scenario.txt`** — iRace scenario configuration (paths, budget, log file)
 - **`*-parameters.txt`** — Parameter space definition (name, switch, type, range, constraints)
 - **`*-tunner.sh`** — Target runner script that iRace calls to evaluate a configuration
-- **`instances.txt`** — List of training instance filenames (one per line)
+- **`instances.txt`** — List of training instance filenames (legacy, used by non-staged tuning)
+- **`train-instances.txt`** — Training instances for staged ablation
+- **`test-instances.txt`** — Held-out test instances for staged ablation
+- **`irace_runner.sh`** — Orchestration script for the full ablation workflow
 
 ## Prerequisites
 
