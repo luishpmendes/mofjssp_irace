@@ -6,7 +6,7 @@ set -o pipefail
 
 # Scenario base names, in launch order: the five baseline algorithms followed
 # by the six NS-BRKGA ablation stages.
-SCENARIOS=(nsga2 nspso moead mhaco ihs)
+SCENARIOS=(nsga2 nsga3 nspso moead mhaco ihs)
 STAGES=(1 2 3 4 5 6)
 
 PIDS=()

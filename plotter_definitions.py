@@ -1,6 +1,7 @@
 instances = ["mk01", "mk02", "mk03", "mk04", "mk05", "mk06", "mk07", "mk08", "mk09", "mk10", "mk11", "mk12", "mk13", "mk14", "mk15"]
-solvers = ["nsga2", "nspso", "moead", "mhaco", "ihs", "nsbrkga"]
+solvers = ["nsga2", "nsga3", "nspso", "moead", "mhaco", "ihs", "nsbrkga"]
 solver_labels = {"nsga2": "NSGA-II",
+                 "nsga3": "NSGA-III",
                  "nspso": "NSPSO",
                  "moead": "MOEA/D-DE",
                  "mhaco": "MHACO",
