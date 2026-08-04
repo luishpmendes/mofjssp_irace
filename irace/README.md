@@ -64,11 +64,16 @@ Stage 1 uses a synthetic `elites_percentage` parameter that the runner maps to b
 
 ### Running the Ablation
 
-**Run all six stages in parallel, then the held-out testing phase:**
+**Run all six stages in parallel, then the held-out validation phase:**
 ```bash
-cd irace/
-./irace_runner.sh
+./irace/irace_runner.sh
 ```
+`irace_runner.sh` changes to its own directory first, so it works from any
+current directory. It deletes the artifacts of any previous run
+(`irace-*.Rdata`, `irace.log`, `*-tuning.log`, `*-testing.log`) before
+starting, so validation can never read a stale result. Those files are
+committed, so `git checkout HEAD -- .` restores them if a run was started by
+mistake.
 
 **Run a single stage manually:**
 ```bash
@@ -79,14 +84,18 @@ Rscript -e "library(irace); irace::irace_cmdline(c('--scenario','nsbrkga-scenari
 **Validate a stage scenario before running:**
 ```bash
 cd irace/
-irace --check --scenario nsbrkga-scenario-stage1.txt
+TIME_LIMIT=1 Rscript -e "library(irace); irace::irace_cmdline(c('--check','--scenario','nsbrkga-scenario-stage1.txt'))"
 ```
+`--check` really executes the target runner twice, so `TIME_LIMIT=1` keeps it
+to a few seconds. The `irace` executable shipped with the R package is not on
+`PATH` by default, hence the `Rscript` form.
 
 ### Ablation Results
 
 After tuning, each stage produces:
 - `irace-nsbrkga-stageX.Rdata` — iRace log with all tuning data
-- `nsbrkga-stageX-testing.log` — Console output from testing
+- `nsbrkga-stageX-tuning.log` — Console output from tuning
+- `nsbrkga-stageX-testing.log` — Console output from validation
 
 To inspect results in R:
 ```r
@@ -98,11 +107,12 @@ print(iraceResults$allElites[[length(iraceResults$allElites)]])
 
 | Setting | Value | Source |
 |---------|-------|--------|
-| Runner time limit | 300 s (override with `TIME_LIMIT`) | Tuning budget only |
+| Solver time limit | 300 s (override with `TIME_LIMIT`) | Tuning budget only |
+| Hard cap per evaluation | 330 s | `targetRunnerTimeout` in each scenario |
 | iRace budget per stage | `maxExperiments = 2500` | Fixed evaluation count, equal across scenarios |
-| Worst case per tuning | 750 000 s ≈ 8.68 days | 2500 × 300 s |
-| Concurrency | 12 tunings in parallel | `irace_runner.sh` on 16 cores |
-| Test elites | 5 per stage | `testNbElites` in each scenario and in `irace_runner.sh` |
+| Concurrency | 12 tunings in parallel, then 12 validations in parallel | `irace_runner.sh` on 16 cores |
+| Validation elites | 5 per stage | `testNbElites` argument in `irace_runner.sh` |
+| Test instances | 10 | `test-instances.txt` |
 
 The budget is an **experiment count**, not a time budget: iRace stops after
 2500 evaluations of the target runner. `maxTime` is deliberately absent —
@@ -114,10 +124,58 @@ The 300 s tuning limit **deliberately differs** from `run.sh`'s
 scenario within a predictable budget. Configurations are therefore selected
 under a shorter per-run budget than the one they are finally measured under.
 
-Expected duration: **≈ 8.68 days per repository**, with the 12 tunings running
-concurrently on 16 cores. Run one repository at a time — three repositories at
-once would put 36 solvers on 16 cores and each 300 s evaluation would get well
-under a full core.
+#### Nested time limits
+
+Four limits are nested so that a slow or hung run costs a single `Inf` instead
+of the whole tuning:
+
+| Limit | Value | Enforced by | Effect when it fires |
+|-------|-------|-------------|----------------------|
+| Solver budget | `TIME_LIMIT` = 300 s | the solver's own `--time-limit` | normal termination, real cost |
+| Solver kill | `TIME_LIMIT + 5` = 305 s | `timeout` in the target runner | runner prints `Inf` |
+| Hypervolume kill | 8 s | `timeout` in the target runner | runner prints `Inf` |
+| Hard cap | 315 s | `targetRunnerTimeout` in the scenario | **aborts that whole tuning** |
+
+The runner therefore always returns by ≈ 313 s. `targetRunnerTimeout` is a
+backstop that should never fire: iRace passes it to R's `system2(timeout=)` and
+turns an expiry into a fatal `targetRunner` error, which ends that scenario's
+entire run rather than scoring the evaluation as `Inf`.
+
+#### Worst-case wall clock
+
+Every figure below assumes the pathological case in which all 2500 evaluations
+of every scenario run the full 315 s hard cap.
+
+| Phase | Formula | Time |
+|-------|---------|------|
+| Tuning — 12 scenarios in parallel, `parallel = 1`, so 2500 serial evaluations each | 2500 × 315 s | 787 500 s = 9.115 d |
+| Validation — 12 jobs in parallel, 5 elites × 10 test instances each | 5 × 10 × 315 s | 15 750 s = 4.375 h |
+| **This repository** | | **803 250 s = 9.297 d** |
+
+Validation is 2.0 % of tuning — this repository has the largest test set of the
+three, and validation is still negligible next to tuning.
+
+Running the three repositories one after another:
+
+| Repository | Test instances | Tuning | Validation | Total |
+|------------|----------------|--------|------------|-------|
+| `motsp_irace` | 3 | 787 500 s | 4 725 s | 792 225 s (9.170 d) |
+| `mokp_irace` | 3 | 787 500 s | 4 725 s | 792 225 s (9.170 d) |
+| `mofjssp_irace` | 10 | 787 500 s | 15 750 s | 803 250 s (9.297 d) |
+| **Sequential total** | | | | **2 387 700 s = 27.635 d** |
+
+That is **below the 28-day (2 419 200 s) budget, with 31 500 s ≈ 8.75 h of
+margin**. The margin is thin because tuning alone accounts for
+3 × 2500 × 315 s = 27.34 days; neither `maxExperiments = 2500` nor the 315 s
+cap can be raised without exceeding 28 days. iRace's own per-iteration overhead
+(model update, I/O) is minutes per scenario and fits inside the margin.
+
+The real duration is much lower: the solver stops itself at 300 s, rejected
+NSGA-III configurations return `Inf` immediately, and iRace eliminates weak
+configurations long before spending the full budget on them.
+
+Run one repository at a time — three at once would put 36 solvers on 16 cores
+and each evaluation would get well under a full core.
 
 ---
 
@@ -128,9 +186,15 @@ under a full core.
 - **`*-tunner.sh`** — Target runner script that iRace calls to evaluate a configuration
 - **`train-instances.txt`** — Training instances for staged ablation
 - **`test-instances.txt`** — Held-out test instances for staged ablation
-- **`irace_runner.sh`** — Orchestration script for the full ablation workflow
+- **`irace_runner.sh`** — Orchestration script for the full ablation workflow:
+  parallel tuning, then, only if every tuning succeeded, one parallel
+  validation pass
 
 ## Prerequisites
+
+`irace_runner.sh` verifies all of the following before it launches anything,
+and reports every problem it finds at once — a missing piece costs seconds
+instead of being discovered days into a run.
 
 1. **R** with the `irace` package installed:
    ```bash
@@ -144,6 +208,11 @@ under a full core.
 3. **Training and test instances** in `../instances/` matching the names in
    `train-instances.txt` and `test-instances.txt`.
 
+4. **Executable target runners**: `chmod +x *-tunner*.sh`.
+
+5. **`timeout`, `awk`, `sed`, `grep` and `stat`** on `PATH` (coreutils, present
+   on any standard Linux). The runners no longer use `bc`.
+
 ## How iRace Calls the Target Runner
 
 iRace invokes the target runner with:
@@ -152,11 +221,23 @@ iRace invokes the target runner with:
 ```
 
 - **`<instance_path>`** is formed as `trainInstancesDir/instance_name` (e.g., `../instances/mk01.txt`)
-- The runner prints two values: `cost time`
-  - `cost`: Negative hypervolume (minimized by iRace → maximized HV)
-  - `time`: Elapsed seconds, strictly positive (iRace rejects a `time` of 0)
+- The runner prints **exactly one number**: the negated hypervolume. iRace
+  minimizes it, so the hypervolume is maximized.
 
-On failure, runners return a large penalty (`Inf`) to avoid crashing iRace.
+The budget is `maxExperiments`, not `maxTime`, so iRace needs no elapsed time
+and the runner reports none.
+
+The runner prints `Inf` — the worst possible cost, which iRace accepts without
+aborting — whenever:
+
+- the solver exits non-zero or is killed by its `TIME_LIMIT + 5` s `timeout`;
+- the solver writes no Pareto front file;
+- `hypervolume_calculator_exec` exits non-zero or is killed by its 8 s `timeout`;
+- no hypervolume file is written, or its contents are empty, non-numeric or
+  non-finite.
+
+`Inf` is distinct from a hypervolume of 0, reported as `-0`: that is a
+legitimate result meaning no point of the front dominated the reference point.
 
 ## Quick Start
 
@@ -181,6 +262,14 @@ Optional: redirect output to a log:
 ```bash
 Rscript -e "library(irace); irace::irace_cmdline(c('--scenario','nsga2-scenario.txt'))" 2>&1 | tee nsga2-tuning.log
 ```
+
+**Validate manually after a tuning** (`irace_runner.sh` does this for you):
+```bash
+Rscript -e "library(irace); testing_fromlog(logFile='./irace-nsga2.Rdata', testNbElites=5, testIterationElites=0, testInstancesDir='../instances', testInstancesFile='./test-instances.txt')"
+```
+The scenario files carry no `test*` settings, so `irace_cmdline` never runs a
+validation phase of its own and the arguments above are the only source of the
+validation configuration. This is what makes validation happen exactly once.
 
 ## Notes on Parameter Files
 
@@ -219,7 +308,7 @@ where `type` is: `i` (integer), `r` (real), `c` (categorical).
   one, and iRace cannot express that test, so the rule is conservative. At `m = 4` the two
   grids can only meet when `divisions` is 8, where the bound overshoots by 4 to 35
   directions; for every other value of `divisions` it is exact.
-- `nsga3-tunner.sh` re-checks those rules before launching anything and prints `Inf 0` for
+- `nsga3-tunner.sh` re-checks those rules before launching anything and prints `Inf` for
   a configuration that would be rejected, so no solver time is wasted. iRace should never
   produce one; the guard covers manual invocations.
 - `random_mating` remains **untuned** at its default `true`, the mating scheme of the
@@ -244,15 +333,26 @@ where `type` is: `i` (integer), `r` (real), `c` (categorical).
   load("irace-nsga2.Rdata")
   print(iraceResults$allElites[[length(iraceResults$allElites)]])
   ```
+  `irace_runner.sh` deletes these at startup, so they always describe the most
+  recent run.
 
-- **Temporary folders** (created during runs for Pareto files and hypervolume output; cleaned up automatically).
+- **`<label>-tuning.log` / `<label>-testing.log`**: console output of each
+  tuning and of each validation job, one pair per scenario. Also deleted at
+  startup.
+
+- **Scratch files**: every target-runner invocation creates its own `mktemp -d`
+  directory for the Pareto front and the hypervolume output, and removes it on
+  exit.
 
 ## Troubleshooting
 
 | Issue | Fix |
 |-------|-----|
-| `Permission denied` | Make runner executable: `chmod +x *-tunner.sh` |
-| `command not found` errors | Ensure solver binaries are built in `../bin/exec/` |
-| iRace reports non-numeric output | Runner must print exactly `cost time` (two numbers) |
-| `No such file or directory` | Check working directory; run from inside `irace/` |
-| Instance not found | Verify entries in `train-instances.txt` / `test-instances.txt` match files in `../instances/` |
+| `[preflight] FAILED` | Fix every problem listed; nothing was launched. |
+| `target runner is not executable` | `chmod +x *-tunner*.sh` |
+| `executable not built` | Build the solvers: `make execs` from the repository root |
+| `instance not found` | Verify entries in `train-instances.txt` / `test-instances.txt` match files in `../instances/` |
+| `Tuning failed; the validation phase was not started.` | One or more tunings died. Read the named `<label>-tuning.log`, fix the cause and re-run; the script exits 1 and validates nothing. |
+| iRace reports non-numeric output | The runner must print exactly one number. Try it by hand: `TIME_LIMIT=1 ./nsga2-tunner.sh 1 1 1234 ../instances/mk01.txt` |
+| `terminated before completion` from `targetRunner` | An evaluation exceeded `targetRunnerTimeout = 315 s`. The runner's own 305 s / 8 s timeouts should make this unreachable; check for a solver ignoring `--time-limit`. |
+| `No such file or directory` | `irace_runner.sh` works from any directory, but the single-scenario commands above must be run from inside `irace/`. |
