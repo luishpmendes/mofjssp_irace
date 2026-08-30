@@ -1,0 +1,305 @@
+#------------------------------------------------------------------------------
+# irace: An implementation in R of (Elitist) Iterated Racing
+# Version: 4.4.3.dd8d85f
+# Copyright (C) 2010-2025
+# Manuel Lopez-Ibanez     <manuel.lopez-ibanez@manchester.ac.uk>
+# Jeremie Dubois-Lacoste
+# Leslie Perez Caceres    <leslie.perez.caceres@ulb.ac.be>
+#
+# This is free software, and you are welcome to redistribute it under certain
+# conditions.  See the GNU General Public License for details. There is NO
+# WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# irace builds upon previous code from the race package:
+#     race: Racing methods for the selection of the best
+#     Copyright (C) 2003 Mauro Birattari
+#------------------------------------------------------------------------------
+# installed at: /usr/local/lib/R/site-library/irace
+# called with: --scenario mhaco-scenario.txt
+# 2026-08-20 22:11:19 UTC: Reading parameter file '/home/lelescavacini/mofjssp_irace/irace/mhaco-parameters.txt'.
+# 2026-08-20 22:11:19 UTC: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 4
+# minNbSurvival: 4
+# nbParameters: 6
+# seed: 1905593088
+# confidence level: 0.95
+# budget: 2500
+# mu: 5
+# deterministic: FALSE
+
+# 2026-08-20 22:11:19 UTC: Iteration 1 of 4
+# experimentsUsed: 0
+# remainingBudget: 2500
+# currentBudget: 625
+# nbConfigurations: 104
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|        104|         28|-1.211060000e+13|        104|08:40:05|   NA|  NA|    NA|
+|x|          2|        104|         35|-1.039931100e+15|        208|08:40:06|+0.24|0.62|0.1912|
+|x|          3|        104|         35|-7.168190000e+14|        312|08:40:05|+0.25|0.50|0.1651|
+|x|          4|        104|         74|-5.337613963e+14|        416|08:40:05|+0.22|0.41|0.1578|
+|-|          5|         31|         74|-4.271236546e+14|        520|08:40:05|-0.04|0.17|1.0393|
+|=|          6|         31|         35|-3.702658130e+14|        551|02:35:01|+0.00|0.17|0.9875|
+|=|          7|         31|         35|-3.174522350e+14|        582|02:35:01|+0.01|0.15|0.9629|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          35    mean value: -3.174522350e+14
+Description of the best-so-far configuration:
+   .ID. population_size_factor ker    q threshold n_gen_mark focus .PARENT.
+35   35                    114  20 1.37        98         70  8.45       NA
+
+# 2026-08-22 22:41:51 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+   population_size_factor ker    q threshold n_gen_mark focus
+35                    114  20 1.37        98         70  8.45
+21                    100  28 0.59        90         40  2.67
+67                     77  22 1.73        80         47  5.40
+74                     70  16 0.86        99         16  1.03
+# 2026-08-22 22:41:51 UTC: Iteration 2 of 4
+# experimentsUsed: 582
+# remainingBudget: 1918
+# currentBudget: 639
+# nbConfigurations: 83
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          8|         83|         35|-1.232750000e+13|         83|06:55:04|   NA|  NA|    NA|
+|x|          3|         83|        116|-4.143635000e+13|        162|06:35:04|+0.28|0.64|0.2724|
+|x|          7|         83|        108|-2.780571900e+13|        241|06:35:04|+0.26|0.51|0.2324|
+|x|          2|         83|        149|-5.453982780e+14|        320|06:35:05|+0.20|0.40|0.2539|
+|-|          4|         46|        154|-4.280044173e+14|        399|06:35:04|-0.12|0.11|1.0910|
+|=|          1|         46|        154|-3.586285310e+14|        441|03:30:02|-0.07|0.11|1.0186|
+|=|          6|         46|        154|-3.174855552e+14|        483|03:30:02|-0.04|0.11|0.9897|
+|=|          5|         46|         35|-2.793116432e+14|        525|03:30:02|-0.03|0.10|0.9918|
+|=|          9|         46|         35|-2.482806649e+14|        571|03:50:02|-0.03|0.09|0.9898|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          35    mean value: -2.482806649e+14
+Description of the best-so-far configuration:
+   .ID. population_size_factor ker    q threshold n_gen_mark focus .PARENT.
+35   35                    114  20 1.37        98         70  8.45       NA
+
+# 2026-08-24 22:17:23 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size_factor ker    q threshold n_gen_mark focus
+35                     114  20 1.37        98         70  8.45
+121                    122  23 1.76        91         69  8.93
+158                    119  56 1.07        85         69  8.96
+74                      70  16 0.86        99         16  1.03
+# 2026-08-24 22:17:23 UTC: Iteration 3 of 4
+# experimentsUsed: 1153
+# remainingBudget: 1347
+# currentBudget: 673
+# nbConfigurations: 70
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         10|         70|        190|-2.101520000e+15|         70|05:50:04|   NA|  NA|    NA|
+|x|          9|         70|        202|-1.043311717e+15|        136|05:30:03|+0.21|0.61|0.1261|
+|x|          5|         70|        246|-6.899924213e+14|        202|05:30:03|+0.17|0.45|0.0939|
+|x|          7|         70|        246|-5.176375375e+14|        268|05:30:03|+0.15|0.36|0.0807|
+|-|          1|         34|        246|-4.164921700e+14|        334|05:30:03|-0.11|0.11|1.0937|
+|=|          6|         34|        246|-3.586618416e+14|        364|02:30:01|-0.08|0.10|1.0553|
+|=|          8|         34|        211|-3.041402323e+14|        394|02:30:01|-0.06|0.09|1.0355|
+|=|          2|         34|        240|-5.295267228e+14|        424|02:30:01|-0.05|0.08|1.0202|
+|=|          3|         34|         35|-4.750025437e+14|        454|02:30:01|-0.03|0.08|1.0030|
+|=|          4|         34|         35|-4.275055984e+14|        484|02:30:01|-0.03|0.07|1.0047|
+|=|         11|         34|         35|-5.764914531e+14|        518|02:50:02|-0.03|0.07|0.9983|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          35    mean value: -5.764914531e+14
+Description of the best-so-far configuration:
+   .ID. population_size_factor ker    q threshold n_gen_mark focus .PARENT.
+35   35                    114  20 1.37        98         70  8.45       NA
+
+# 2026-08-26 17:27:54 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size_factor ker    q threshold n_gen_mark focus
+35                     114  20 1.37        98         70  8.45
+74                      70  16 0.86        99         16  1.03
+246                    117  12 1.66        88         78  6.85
+240                    122  32 1.71        97         84  9.43
+# 2026-08-26 17:27:54 UTC: Iteration 4 of 4
+# experimentsUsed: 1671
+# remainingBudget: 829
+# currentBudget: 829
+# nbConfigurations: 72
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         12|         72|        304|-1.233340000e+13|         72|06:00:04|   NA|  NA|    NA|
+|x|         10|         72|        266|-1.045308600e+15|        140|05:40:04|+0.25|0.62|0.3187|
+|x|         11|         72|        276|-1.384464633e+15|        208|05:40:04|+0.14|0.43|0.3119|
+|x|          5|         72|        254|-1.035786212e+15|        276|05:40:03|+0.11|0.33|0.2979|
+|=|          3|         72|        254|-8.427765898e+14|        344|05:40:03|+0.07|0.26|0.3139|
+|-|          8|         30|        254|-7.042927248e+14|        412|05:40:04|-0.08|0.10|1.0622|
+|=|          2|         30|        254|-8.959994784e+14|        438|02:10:01|-0.05|0.10|1.0272|
+|=|          6|         30|         35|-7.925651359e+14|        464|02:10:01|-0.05|0.08|1.0150|
+|=|          4|         30|        252|-7.049058886e+14|        490|02:10:01|-0.03|0.09|0.9950|
+|=|          9|         30|         74|-6.358591698e+14|        516|02:10:01|-0.02|0.08|0.9976|
+|=|          7|         30|        252|-5.767964048e+14|        542|02:10:01|-0.04|0.06|1.0119|
+|=|          1|         30|        252|-5.297097794e+14|        568|02:10:01|-0.03|0.06|0.9983|
+|=|         13|         30|         35|-4.941282757e+14|        598|02:30:01|-0.03|0.05|1.0016|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:          35    mean value: -4.941282757e+14
+Description of the best-so-far configuration:
+   .ID. population_size_factor ker    q threshold n_gen_mark focus .PARENT.
+35   35                    114  20 1.37        98         70  8.45       NA
+
+# 2026-08-28 19:18:29 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size_factor ker    q threshold n_gen_mark focus
+35                     114  20 1.37        98         70  8.45
+273                    117  12 1.70        89         75  6.94
+74                      70  16 0.86        99         16  1.03
+252                    120  10 1.52        86         80  6.52
+# 2026-08-28 19:18:29 UTC: Iteration 5 of 5
+# experimentsUsed: 2269
+# remainingBudget: 231
+# currentBudget: 231
+# nbConfigurations: 20
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         14|         20|        252|-3.366510000e+10|         20|01:40:01|   NA|  NA|    NA|
+|x|          9|         20|         74|-3.334955000e+10|         36|01:20:00|+0.36|0.68|0.6643|
+|x|          4|         20|         74|-3.336140000e+10|         52|01:20:00|+0.42|0.61|0.6357|
+|x|         11|         20|         74|-5.135925210e+14|         68|01:20:01|+0.26|0.45|0.7260|
+|-|          8|         14|        324|-4.199349306e+14|         84|01:20:01|-0.04|0.17|0.9676|
+|=|         10|         14|         74|-6.921683140e+14|         94|00:50:00|-0.01|0.16|0.9507|
+|=|          7|         14|         74|-5.933677386e+14|        104|00:50:00|-0.05|0.10|0.9786|
+|=|          5|         14|        252|-5.124526397e+14|        114|00:50:00|-0.04|0.09|0.9686|
+|=|          6|         14|        252|-4.632940353e+14|        124|00:50:00|-0.02|0.09|0.9388|
+|=|         13|         14|        332|-4.223022598e+14|        134|00:50:00|-0.01|0.09|0.9334|
+|=|          2|         14|        332|-5.732102362e+14|        144|00:50:00|-0.01|0.08|0.9446|
+|=|          1|         14|        332|-5.264106082e+14|        154|00:50:00|-0.03|0.06|0.9549|
+|=|          3|         14|        332|-4.913598691e+14|        164|00:50:00|-0.03|0.05|0.9654|
+|=|         12|         14|        319|-4.601977200e+14|        174|00:50:00|-0.03|0.04|0.9680|
+|=|         15|         14|        252|-4.283512294e+14|        188|01:10:00|-0.03|0.04|0.9620|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         252    mean value: -4.283512294e+14
+Description of the best-so-far configuration:
+    .ID. population_size_factor ker    q threshold n_gen_mark focus .PARENT.
+252  252                    120  10 1.52        86         80  6.52      246
+
+# 2026-08-29 10:58:41 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size_factor ker    q threshold n_gen_mark focus
+252                    120  10 1.52        86         80  6.52
+319                    120  24 1.47        97         64  8.91
+74                      70  16 0.86        99         16  1.03
+332                    109  24 1.45        97         72  8.30
+# 2026-08-29 10:58:41 UTC: Iteration 6 of 6
+# experimentsUsed: 2457
+# remainingBudget: 43
+# currentBudget: 43
+# nbConfigurations: 6
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         16|          6|        335|-2.082070000e+15|          6|00:30:00|   NA|  NA|    NA|
+|x|         15|          6|         74|-1.023472076e+15|          8|00:10:00|-0.71|0.14|1.4524|
+|x|          9|          6|         74|-6.823258588e+14|         10|00:10:00|-0.07|0.29|0.8983|
+|x|         12|          6|         74|-5.147489941e+14|         12|00:10:00|+0.03|0.27|0.7948|
+|=|          4|          6|         74|-4.118058723e+14|         14|00:10:00|+0.09|0.27|0.7472|
+|=|          2|          6|        252|-6.899251868e+14|         16|00:10:00|+0.13|0.28|0.7038|
+|=|          5|          6|        252|-5.914465159e+14|         18|00:10:00|+0.14|0.26|0.6685|
+|=|         14|          6|        252|-5.175199096e+14|         20|00:10:00|+0.14|0.25|0.6774|
+|=|          3|          6|        252|-4.678363863e+14|         22|00:10:00|+0.13|0.23|0.6893|
+|=|          6|          6|        252|-4.280552677e+14|         24|00:10:00|+0.05|0.14|0.7779|
+|=|         10|          6|         74|-5.763144840e+14|         26|00:10:00|+0.04|0.13|0.7919|
+|=|          1|          6|         74|-5.292719937e+14|         28|00:10:00|+0.01|0.09|0.8146|
+|=|         11|          6|         74|-6.465795326e+14|         30|00:10:00|+0.03|0.10|0.8145|
+|=|          8|          6|        252|-5.993343983e+14|         32|00:10:00|+0.01|0.08|0.8343|
+|=|          7|          6|        252|-5.594170560e+14|         34|00:10:00|+0.01|0.08|0.8260|
+|=|         13|          6|        252|-5.287124025e+14|         36|00:10:00|+0.01|0.07|0.8341|
+|=|         17|          6|        252|-4.976136092e+14|         42|00:30:00|-0.02|0.04|0.8527|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         252    mean value: -4.976136092e+14
+Description of the best-so-far configuration:
+    .ID. population_size_factor ker    q threshold n_gen_mark focus .PARENT.
+252  252                    120  10 1.52        86         80  6.52      246
+
+# 2026-08-29 14:28:43 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size_factor ker    q threshold n_gen_mark focus
+252                    120  10 1.52        86         80  6.52
+74                      70  16 0.86        99         16  1.03
+319                    120  24 1.47        97         64  8.91
+332                    109  24 1.45        97         72  8.30
+# 2026-08-29 14:28:43 UTC: Stopped because there is not enough budget left to race more than the minimum (4).
+# You may either increase the budget or set 'minNbSurvival' to a lower value.
+# Iteration: 7
+# nbIterations: 7
+# experimentsUsed: 2499
+# timeUsed: 0
+# remainingBudget: 1
+# currentBudget: 1
+# number of elites: 4
+# nbConfigurations: 4
+# Total CPU user time: 749682.5, CPU sys time: 151.171, Wall-clock time: 749844.2
+# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size_factor ker    q threshold n_gen_mark focus
+252                    120  10 1.52        86         80  6.52
+74                      70  16 0.86        99         16  1.03
+319                    120  24 1.47        97         64  8.91
+332                    109  24 1.45        97         72  8.30
+# Best configurations as commandlines (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+252 --population-size-factor 120 --ker 10 --q 1.52 --threshold 86 --n-gen-mark 80 --focus 6.52
+74  --population-size-factor 70 --ker 16 --q 0.86 --threshold 99 --n-gen-mark 16 --focus 1.03
+319 --population-size-factor 120 --ker 24 --q 1.47 --threshold 97 --n-gen-mark 64 --focus 8.91
+332 --population-size-factor 109 --ker 24 --q 1.45 --threshold 97 --n-gen-mark 72 --focus 8.3
+
+
+# Testing of elite configurations: 1 
+# Testing iteration configurations: FALSE 
+# 2026-08-29 14:28:43 UTC: No test instances, skip testing

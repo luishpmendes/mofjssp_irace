@@ -1,0 +1,17 @@
+
+
+# Testing of elite configurations: 5 
+# Testing iteration configurations: 0 
+# 2026-08-29 14:47:19 UTC: Testing configurations (in no particular order): 252 74 319 332
+    population_size_factor ker    q threshold n_gen_mark focus
+252                    120  10 1.52        86         80  6.52
+74                      70  16 0.86        99         16  1.03
+319                    120  24 1.47        97         64  8.91
+332                    109  24 1.45        97         72  8.30
+# 2026-08-29 15:47:20 UTC: Testing results (column number is configuration ID in no particular order):
+        seeds          252           74          319          332
+1t 1090418349 -1.02973e+14 -1.01971e+14 -1.00621e+14 -1.01437e+14
+2t  231478966 -1.22429e+15 -1.23936e+15 -1.24069e+15 -1.21947e+15
+3t  955856493 -2.39324e+16 -2.41606e+16 -2.43741e+16 -2.39775e+16
+# 2026-08-29 15:47:20 UTC: Finished testing
+[1] TRUE
