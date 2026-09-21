@@ -42,6 +42,7 @@ int main() {
         solver.population_size = 32;
         solver.max_num_snapshots = 16;
         solver.divisions = 3;
+        solver.divisions_inner = 0;
 
         assert((solver.seed = 2351389233));
         assert(fabs(solver.time_limit - 5.0) <
@@ -50,13 +51,13 @@ int main() {
         assert(solver.max_num_solutions == 128);
         assert(solver.population_size == 32);
         assert(solver.max_num_snapshots == 16);
-        assert(fabs(solver.crossover_probability - 0.95) <
+        assert(fabs(solver.crossover_probability - 0.67) <
             std::numeric_limits<double>::epsilon());
-        assert(fabs(solver.crossover_distribution - 10.00) <
+        assert(fabs(solver.crossover_distribution - 57.04) <
             std::numeric_limits<double>::epsilon());
         assert(fabs(solver.mutation_probability - 0.01) <
             std::numeric_limits<double>::epsilon());
-        assert(fabs(solver.mutation_distribution - 50.00) <
+        assert(fabs(solver.mutation_distribution - 2.19) <
             std::numeric_limits<double>::epsilon());
         assert(solver.divisions == 3);
         assert(solver.divisions_inner == 0);

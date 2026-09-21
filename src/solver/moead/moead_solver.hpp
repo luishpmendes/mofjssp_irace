@@ -13,13 +13,13 @@ class MOEAD_Solver : public Solver {
     /*******************************
      * Size of the population.
      *******************************/
-    unsigned population_size = 300;
+    unsigned population_size = 200;
 
     /******************************************************
      * Method used to generate the weights, one of “grid”,
      * “low discrepancy” or “random”.
      ******************************************************/
-    std::string weight_generation = "random";
+    std::string weight_generation = "low discrepancy";
 
     /******************************************************************
      * Decomposition method: one of “weighted”, “tchebycheff” or “bi”.
@@ -29,34 +29,34 @@ class MOEAD_Solver : public Solver {
     /*************************************
      * Size of the weight’s neighborhood.
      *************************************/
-    unsigned neighbours = 20;
+    unsigned neighbours = 7;
 
     /**************************************************************
      * Crossover parameter in the Differential Evolution operator.
      **************************************************************/
-    double cr = 1.0;
+    double cr = 0.12;
 
     /*****************************************************
      * Parameter for the Differential Evolution operator.
      *****************************************************/
-    double f = 0.5;
+    double f = 0.89;
 
     /******************************************************
      * Distribution index used by the polynomial mutation.
      ******************************************************/
-    double eta_m = 20.0;
+    double eta_m = 1.31;
 
     /*************************************************************************
      * Chance that the neighbourhood is considered at each generation,
      * rather than the whole population (only if preserve_diversity is true).
      *************************************************************************/
-    double realb = 0.9;
+    double realb = 0.33;
 
     /********************************************************
      * Maximum number of copies reinserted in the population
      * (only if m_preserve_diversity is true).
      ********************************************************/
-    unsigned limit = 2;
+    unsigned limit = 3;
 
     /***********************************************************
      * When true activates the two diversity preservation

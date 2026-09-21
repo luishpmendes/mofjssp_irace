@@ -13,32 +13,32 @@ class IHS_Solver : public Solver {
     /*******************************
      * Size of the population.
      *******************************/
-    unsigned population_size = 300;
+    unsigned population_size = 128;
 
     /***************************************
      * Probability of choosing from memory.
      ***************************************/
-    double phmcr = 0.85;
+    double phmcr = 0.98931;
 
     /*********************************
      * Minimum pitch adjustment rate.
      *********************************/
-    double ppar_min = 0.35;
+    double ppar_min = 0.248173;
 
     /*********************************
      * Maximum pitch adjustment rate.
      *********************************/
-    double ppar_max = 0.99;
+    double ppar_max = 0.871622;
 
     /******************************
      * Minimum distance bandwidth.
      ******************************/
-    double bw_min = 1E-5;
+    double bw_min = 0.007596;
 
     /******************************
      * Maximum distance bandwidth.
      ******************************/
-    double bw_max = 1.0;
+    double bw_max = 0.263619;
 
     /*********************************************
      * Constructs a new solver.

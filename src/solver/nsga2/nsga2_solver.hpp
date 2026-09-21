@@ -13,17 +13,17 @@ class NSGA2_Solver : public Solver {
     /*******************************
      * Size of the population.
      *******************************/
-    unsigned population_size = 300;
+    unsigned population_size = 172;
 
     /************************************
      * Crossover probability.
      ************************************/
-    double crossover_probability = 0.95;
+    double crossover_probability = 0.62;
 
     /**************************************
      * Distribution index for crossover.
      **************************************/
-    double crossover_distribution = 10.00;
+    double crossover_distribution = 40.00;
 
     /************************************
      * Mutation probability.
@@ -33,7 +33,7 @@ class NSGA2_Solver : public Solver {
     /*************************************
      * Distribution index for mutation.
      *************************************/
-    double mutation_distribution = 50.00;
+    double mutation_distribution = 1.18;
 
     /*********************************************
      * Constructs a new solver.

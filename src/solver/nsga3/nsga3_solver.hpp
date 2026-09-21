@@ -13,17 +13,17 @@ class NSGA3_Solver : public Solver {
     /*******************************
      * Size of the population.
      *******************************/
-    unsigned population_size = 300;
+    unsigned population_size = 400;
 
     /************************************
      * Crossover probability.
      ************************************/
-    double crossover_probability = 0.95;
+    double crossover_probability = 0.67;
 
     /**************************************
      * Distribution index for crossover.
      **************************************/
-    double crossover_distribution = 10.00;
+    double crossover_distribution = 57.04;
 
     /************************************
      * Mutation probability.
@@ -33,20 +33,20 @@ class NSGA3_Solver : public Solver {
     /*************************************
      * Distribution index for mutation.
      *************************************/
-    double mutation_distribution = 50.00;
+    double mutation_distribution = 2.19;
 
     /**********************************************************
      * Number of divisions per objective used to generate the
      * reference point set.
      **********************************************************/
-    unsigned divisions = 6;
+    unsigned divisions = 8;
 
     /**********************************************************
      * Number of divisions per objective used to generate the
      * inner layer of the reference direction set.
      * Zero uses the outer layer alone.
      **********************************************************/
-    unsigned divisions_inner = 0;
+    unsigned divisions_inner = 2;
 
     /**********************************************************
      * Mating selection parameter.

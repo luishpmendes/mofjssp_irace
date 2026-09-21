@@ -1,13 +1,19 @@
 instances = ["mk01", "mk02", "mk03", "mk04", "mk05", "mk06", "mk07", "mk08", "mk09", "mk10", "mk11", "mk12", "mk13", "mk14", "mk15"]
-solvers = ["nsga2", "nsga3", "nspso", "moead", "mhaco", "ihs", "nsbrkga"]
+solvers = ["nsga2", "nsga3", "nspso", "moead", "mhaco", "ihs",
+           "nsbrkga1", "nsbrkga2", "nsbrkga3", "nsbrkga4", "nsbrkga5", "nsbrkga6"]
 solver_labels = {"nsga2": "NSGA-II",
                  "nsga3": "NSGA-III",
                  "nspso": "NSPSO",
                  "moead": "MOEA/D-DE",
                  "mhaco": "MHACO",
                  "ihs": "IHS",
-                 "nsbrkga": "NS-BRKGA"}
-seeds = [305089489, 511812191, 608055156, 467424509, 944441939, 414977408, 819312498, 562386085, 287613914, 755772793]
+                 "nsbrkga1": "NS-BRKGA S1",
+                 "nsbrkga2": "NS-BRKGA S2",
+                 "nsbrkga3": "NS-BRKGA S3",
+                 "nsbrkga4": "NS-BRKGA S4",
+                 "nsbrkga5": "NS-BRKGA S5",
+                 "nsbrkga6": "NS-BRKGA S6"}
+seeds = [829249666, 948391020, 437349832, 224971284, 318762008, 248020142, 145603336, 842216060, 795652969, 290822624, 527829361, 406480597, 524127926, 802682008, 761754044, 684835752, 330881998, 525728155, 864672239, 510218942, 636182588, 199650424, 724231466, 623485821, 553462928, 321870976, 470702405, 874358826, 872284682, 348372676, 942314095]
 versions = ["best", "median"]
 colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#8c7e6e", "#738191"]
 colors2 = ["#103c5a", "#804007", "#165016", "#6b1414", "#4a345f", "#462b26", "#723c61", "#404040", "#5e5f11", "#0c5f68", "#463f37", "#3a4149"]
