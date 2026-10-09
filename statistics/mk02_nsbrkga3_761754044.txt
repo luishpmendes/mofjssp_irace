@@ -1,0 +1,51 @@
+Number of jobs: 10
+Total number of operations: 58
+Number of machines: 6
+Seed: 761754044
+Time limit: 300
+Iterations limit: 4294967295
+Initial individuals: 0
+Maximum number of solutions: 500
+Maximum number of snapshots: 30
+Factor at which the time between snapshots are increased: 1.28107
+Factor at which the iterations between snapshots are increased: 1
+Number of iterations: 11662
+Solutions obtained: 38
+Solving time: 300.015
+Number of snapshots: 30
+Time next snapshot: 300.028
+Time when the last snapshot was taken: 300.014
+Number of iteration of the next snapshot: 4294967295
+Iteration when the last snapshot was taken: 11662
+Number of individuals in each population: 424
+Minimum percentage of individuals to become the elite set: 0.13
+Maximum percentage of individuals to become the elite set: 0.21
+Mutation probability: 0.02
+Mutation distribution: 43.75
+Number of total parents for mating: 3
+Number of elite parents for mating: 1
+Type of bias that will be used: CUBIC
+Type of diversity that will be used: AVERAGE_DISTANCE_BETWEEN_ALL_PAIRS
+Type of crossover that will be used: ROULETTE
+Number of independent parallel populations: 5
+Interval at which the elite solutions are exchanged between populations: 120
+Number of elite individuals to be exchanged between populations: 80
+Type of path relink that will be used: PERMUTATION
+Distance function used in path relinking: HAMMING
+Percentage of the path to be computed: 0.37
+Interval at which the path relink is applied: 0
+Interval at which the populations are shaken: 0
+The intensity of the shaking: 0.38
+The distribution of the shaking: 28.08
+Interval at which the populations are reset: 0
+The intensity of the reset: 0.33
+Number of threads to be used during parallel decoding: 1
+Last update generation: 11400
+Last update time: 293.301
+Largest number of generations between improvements: 2301
+Total path relink time: 0
+Total path relink calls: 0
+Improvements in the elite set: 0
+Best individual improvements: 0
+Total shakings calls: 0
+Total resets calls: 0
