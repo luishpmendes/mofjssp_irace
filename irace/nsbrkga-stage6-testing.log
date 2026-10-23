@@ -2,47 +2,47 @@
 
 # Testing of elite configurations: 5 
 # Testing iteration configurations: 0 
-# 2026-08-29 14:47:19 UTC: Testing configurations (in no particular order): 344 359 305 366 360
+# 2026-10-23 12:09:20 UTC: Testing configurations (in no particular order): 313 315 248 307 325
     population_size_factor min_elites_percentage max_elites_percentage
-344                     91                  0.31                  0.34
-359                    102                  0.10                  0.19
-305                    113                  0.17                  0.35
-366                     95                  0.04                  0.21
-360                     85                  0.09                  0.33
+313                    109                  0.24                  0.28
+315                    107                  0.23                  0.29
+248                    115                  0.28                  0.41
+307                    108                  0.13                  0.49
+325                    119                  0.19                  0.47
     mutation_probability mutation_distribution num_total_parents
-344                 0.03                 49.05                 4
-359                 0.09                 77.06                 4
-305                 0.13                 78.44                 4
-366                 0.02                 84.84                 4
-360                 0.19                 49.76                 5
+313                 0.03                 17.05                 2
+315                 0.03                 19.62                 2
+248                 0.01                 23.44                 4
+307                 0.02                 15.31                 4
+325                 0.01                 30.28                 4
     num_elite_parents bias_type diversity_type crossover_type num_populations
-344                 2         5              2              0               5
-359                 1         5              2              0               4
-305                 2         5              2              0               5
-366                 1         5              2              0               4
-360                 2         5              2              0               5
+313                 1         1              0              0               3
+315                 1         1              0              0               3
+248                 3         1              1              0               5
+307                 3         1              1              0               4
+325                 3         1              1              0               5
     exchange_interval num_exchange_individuals pr_type pr_dist_func
-344               267                       37       1            0
-359               932                        6       1            0
-305               223                       21       1            0
-366               776                       13       1            0
-360               167                       32       1            0
+313               320                       33       2            0
+315               255                       20       2            0
+248               543                       30       2            0
+307               514                       35       2            0
+325               595                       23       2            0
     pr_percentage pr_interval shake_interval shake_intensity shake_distribution
-344          0.37          56              8            0.38              28.08
-359          0.28         343             53            0.97              34.05
-305          0.30          56            136            0.74              45.86
-366          0.17         331            125            0.83              35.73
-360          0.55          61             69            0.49              33.42
+313          1.00         346            205            0.31              31.71
+315          1.00         235             84            0.39              48.91
+248          1.00         315            139            0.40              20.89
+307          1.00         212            146            0.59              29.58
+325          1.00         410            107            0.48              21.63
     reset_interval reset_intensity
-344            433            0.33
-359            739            0.56
-305            702            0.12
-366            837            0.55
-360            413            0.33
-# 2026-08-29 16:02:24 UTC: Testing results (column number is configuration ID in no particular order):
-        seeds          344          359          305          366          360
-1t 1287252120 -1.05032e+14 -1.04402e+14 -1.04435e+14 -1.04799e+14 -1.04555e+14
-2t 1481387349 -1.31194e+15 -1.30286e+15 -1.30824e+15 -1.32065e+15 -1.30782e+15
-3t 1259365395 -2.56993e+16 -2.54853e+16 -2.57010e+16 -2.54868e+16 -2.56388e+16
-# 2026-08-29 16:02:24 UTC: Finished testing
+313            643            0.60
+315            715            0.63
+248            783            0.40
+307            710            0.45
+325            762            0.35
+# 2026-10-23 12:49:21 UTC: Testing results (column number is configuration ID in no particular order):
+        seeds          313          315          248          307          325
+1t  835214066 -1.04693e+14 -1.04780e+14 -1.04943e+14 -1.05058e+14 -1.04728e+14
+2t 1809090614 -1.29605e+15 -1.29908e+15 -1.31606e+15 -1.30535e+15 -1.31553e+15
+3t 1878446738 -2.51223e+16 -2.54871e+16 -2.56657e+16 -2.53424e+16 -2.58264e+16
+# 2026-10-23 12:49:21 UTC: Finished testing
 [1] TRUE

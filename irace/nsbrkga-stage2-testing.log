@@ -2,36 +2,31 @@
 
 # Testing of elite configurations: 5 
 # Testing iteration configurations: 0 
-# 2026-08-29 14:47:19 UTC: Testing configurations (in no particular order): 226 283 296 305
+# 2026-10-23 12:09:20 UTC: Testing configurations (in no particular order): 306 297 203
     population_size_factor min_elites_percentage max_elites_percentage
-226                    103                  0.37                  0.63
-283                    108                  0.36                  0.66
-296                    114                  0.40                  0.55
-305                    108                  0.33                  0.67
+306                    116                  0.17                  0.35
+297                    118                  0.19                  0.43
+203                    122                  0.30                  0.42
     mutation_probability mutation_distribution num_total_parents
-226                 0.01                  2.07                 3
-283                 0.01                  3.50                 3
-296                 0.02                  2.37                 3
-305                 0.02                  1.08                 3
+306                 0.03                 15.34                 2
+297                 0.02                 17.86                 2
+203                 0.03                 17.33                 2
     num_elite_parents bias_type diversity_type crossover_type num_populations
-226                 1         2              0              0               1
-283                 1         2              0              0               1
-296                 1         2              0              0               1
-305                 1         2              0              0               1
+306                 2         1              0              0               1
+297                 2         1              1              0               1
+203                 2         1              1              0               1
     exchange_interval num_exchange_individuals pr_interval shake_interval
-226                 0                        1           0              0
-283                 0                        1           0              0
-296                 0                        1           0              0
-305                 0                        1           0              0
+306                 0                        1           0              0
+297                 0                        1           0              0
+203                 0                        1           0              0
     reset_interval
-226              0
-283              0
-296              0
-305              0
-# 2026-08-29 15:47:20 UTC: Testing results (column number is configuration ID in no particular order):
-        seeds          226          283          296          305
-1t 1151463898 -1.04933e+14 -1.04801e+14 -1.04113e+14 -1.05050e+14
-2t 1316111382 -1.29232e+15 -1.30465e+15 -1.29263e+15 -1.30267e+15
-3t 1859873921 -2.51087e+16 -2.52391e+16 -2.53596e+16 -2.53470e+16
-# 2026-08-29 15:47:20 UTC: Finished testing
+306              0
+297              0
+203              0
+# 2026-10-23 12:34:20 UTC: Testing results (column number is configuration ID in no particular order):
+        seeds          306          297          203
+1t 1708174309 -1.04144e+14 -1.04398e+14 -1.04697e+14
+2t 1184796029 -1.29375e+15 -1.30259e+15 -1.29650e+15
+3t  255128155 -2.48569e+16 -2.51485e+16 -2.50614e+16
+# 2026-10-23 12:34:20 UTC: Finished testing
 [1] TRUE
